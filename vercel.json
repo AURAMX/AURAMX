@@ -2,7 +2,7 @@
   "github": {
     "silent": true
   },
-  "buildCommand": "npx expo export:web",
-  "outputDirectory": "web-build",
+  "buildCommand": "npx expo export --platform web",
+  "outputDirectory": "dist",
   "framework": null
 }
