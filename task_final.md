@@ -1,0 +1,21 @@
+# Task: Final Mastery & Profile Systems
+
+- [x] Create Supabase Safety Wrapper (`supabase_util.ts`)
+- [x] Implement Learn Screen (`learn.tsx`)
+    - [x] 4x4 Knowledge Matrix Grid
+    - [x] Quiz Engine with XP Rewards
+    - [x] Fireworks Animation (XP High Score)
+- [x] Implement Academy Screen (`academy.tsx`)
+    - [x] Expandable Course Modules
+    - [x] SVG Trading Infographics
+- [x] Implement Profile Screen (`profile.tsx`)
+    - [x] XP Progress and XP-derived Level logic
+    - [x] 7-day Streak Tracking UI
+    - [x] 7-Badge Unlock System
+    - [x] PIN Lock System (SecureStore)
+    - [x] Price Alerts Manager
+    - [x] Developer Contact Section
+- [x] Implement Gemini Chatbot (`chatbot.tsx`)
+    - [x] Educational-only prompt constraint
+- [x] Add 3x Retry logic to all backend calls
+- [x] Final polishing and verification

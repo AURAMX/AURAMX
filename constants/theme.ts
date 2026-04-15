@@ -1,53 +1,54 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * AURAMX PRODUCTION DESIGN SYSTEM (LOCKED)
  */
 
-import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
 export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+  background: '#0B0F1A',
+  card: '#1A1F2E',
+  gold: '#D4AF37',
+  goldGlow: 'rgba(212, 175, 55, 0.2)',
+  profit: '#22C55E',
+  loss: '#EF4444',
+  text: '#FFFFFF',
+  textDim: '#8A8D93',
+  glass: 'rgba(26, 31, 46, 0.8)',
+  glassBorder: 'rgba(255, 255, 255, 0.05)',
+  
+  // Indicators
+  rsi: '#9C27B0',
+  volume: 'rgba(255, 255, 255, 0.1)',
+  macdSignal: '#FF9800',
+  macdMain: '#2196F3',
+  bollinger: 'rgba(212, 175, 55, 0.1)'
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+export const Spacing = {
+  xs: 8,
+  sm: 16,
+  md: 24,
+  lg: 32,
+  xl: 40,
+  touchTarget: 52,
+};
+
+export const Layout = {
+  borderRadius: 16,
+  cardPadding: 20,
+  glassBlur: 15,
+};
+
+export const Typography = {
+  h1: 32,
+  h2: 24,
+  h3: 20,
+  body: 16,
+  caption: 12,
+  bold: '700',
+  extraBold: '900',
+};
+
+export const Animations = {
+  hoverScale: 1.02,
+  pressScale: 0.95,
+  duration: 300,
+};
