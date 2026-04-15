@@ -256,6 +256,7 @@ export default function ProfileScreen() {
             {/* Security Section */}
             <Text style={styles.secTitle}>Account Defense</Text>
             <GlassCard style={styles.itemCard}>
+                {/* PIN Shield */}
                 <View style={styles.row}>
                     <View style={styles.rowInner}>
                         <Shield color={GOLD} size={20} />
@@ -263,6 +264,8 @@ export default function ProfileScreen() {
                     </View>
                     <Switch value={pinEnabled} onValueChange={togglePin} trackColor={{ true: GOLD }} />
                 </View>
+
+                {/* Biometric */}
                 <View style={[styles.row, { marginTop: 20 }, !bioSupported && { opacity: 0.5 }]}>
                     <View style={styles.rowInner}>
                         <Fingerprint color={GOLD} size={20} />
@@ -278,13 +281,8 @@ export default function ProfileScreen() {
                         disabled={!bioSupported}
                     />
                 </View>
-                    <Switch 
-                        value={pushEnabled} 
-                        onValueChange={() => Alert.alert("Configuration Required", "Push notifications are not yet configured for this build.")} 
-                        trackColor={{ true: GOLD }} 
-                        disabled={true}
-                    />
-                </View>
+
+                {/* Audio Feedback */}
                 <View style={[styles.row, { marginTop: 20 }]}>
                     <View style={styles.rowInner}>
                         <MessageSquare color={GOLD} size={20} />
@@ -294,8 +292,8 @@ export default function ProfileScreen() {
                         </View>
                     </View>
                     <Switch 
-                        value={useAuthStore().soundEnabled} 
-                        onValueChange={(val) => useAuthStore().setSoundEnabled(val)} 
+                        value={pushEnabled} 
+                        onValueChange={() => Alert.alert("Coming Soon", "Audio feedback will be enabled in the next update.")} 
                         trackColor={{ true: GOLD }} 
                     />
                 </View>

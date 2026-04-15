@@ -53,6 +53,12 @@
         "projectId": "efbf025d-1fed-4730-bcf3-b88bf356b16d"
       }
     },
-    "owner": "auramx"
+    "owner": "auramx",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/efbf025d-1fed-4730-bcf3-b88bf356b16d"
+    }
   }
 }
