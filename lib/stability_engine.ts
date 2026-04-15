@@ -80,7 +80,9 @@ export async function engineCall<T>(
  * Ensures user profile is synced or created using Upsert (Locked Rule)
  * Called on every login to restore XP, Streaks, and Levels
  */
-export async function upsertAccount(userId: string, email?: string) {
+export async function upsertAccount(userId: string, email?: string, name?: string) {
+    if (userId.startsWith('guest_')) return { data: null, error: null, fromCache: false };
+
     return engineCall(async () => {
         // Fetch current profile to check streak
         const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).single();
@@ -101,6 +103,7 @@ export async function upsertAccount(userId: string, email?: string) {
             .upsert({ 
                 id: userId, 
                 email: email,
+                name: name || email?.split('@')[0] || 'Aura Trader',
                 streak: newStreak,
                 updated_at: now.toISOString() 
             }, { onConflict: 'id' })

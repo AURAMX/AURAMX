@@ -9,7 +9,10 @@ export default function AuthScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [hasBiometrics, setHasBiometrics] = useState(false);
+  const [guestName, setGuestName] = useState('');
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const setGuestMode = useAuthStore((state) => state.setGuestMode);
+  const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
     checkBiometrics();
@@ -49,8 +52,6 @@ export default function AuthScreen() {
     });
     
     if (result.success) {
-      // In a real implementation, you might fetch encrypted credentials from SecureStore 
-      // here and log in to Supabase. For now, we'll let them in as Guest if biometrics pass.
       Alert.alert('Biometrics Verified', 'You are logged in.');
       setGuestMode(true);
     } else {
@@ -59,6 +60,16 @@ export default function AuthScreen() {
   };
 
   const handleGuestLogin = () => {
+    if (!guestName.trim()) {
+        setShowGuestPrompt(true);
+        return;
+    }
+    // Simulate guest user object
+    setUser({ 
+        id: 'guest_' + Date.now(), 
+        email: guestName + '@auramx.guest',
+        user_metadata: { full_name: guestName }
+    } as any);
     setGuestMode(true);
   };
 
@@ -67,7 +78,14 @@ export default function AuthScreen() {
     // Simulate Google Sign In Flow
     setTimeout(() => {
         setLoading(false);
-        Alert.alert('Google Sign In', 'Successfully authenticated with Google.');
+        const simulatedEmail = "nauman@gmail.com";
+        const name = simulatedEmail.split('@')[0];
+        setUser({ 
+            id: 'google_' + Date.now(), 
+            email: simulatedEmail,
+            user_metadata: { full_name: name }
+        } as any);
+        Alert.alert('Google Sign In', `Welcome, ${name}!`);
         setGuestMode(true);
     }, 1500);
   };
@@ -76,53 +94,75 @@ export default function AuthScreen() {
     <View style={styles.container}>
       <Text style={styles.header}>AURAMX</Text>
       
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#888"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#888"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-      </View>
+      {showGuestPrompt ? (
+          <View style={styles.guestPromptContent}>
+              <Text style={styles.subHeader}>Enter your name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Ex: Nauman"
+                placeholderTextColor="#888"
+                value={guestName}
+                onChangeText={setGuestName}
+                autoFocus
+              />
+              <TouchableOpacity style={styles.button} onPress={handleGuestLogin}>
+                  <Text style={styles.buttonText}>Enter Aura Hub</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowGuestPrompt(false)}>
+                  <Text style={styles.cancelText}>Back to login</Text>
+              </TouchableOpacity>
+          </View>
+      ) : (
+        <>
+            <View style={styles.inputContainer}>
+                <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor="#888"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                />
+                <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#888"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                />
+            </View>
 
-      <TouchableOpacity style={styles.button} onPress={signInWithEmail} disabled={loading}>
-        {loading ? <ActivityIndicator color="#000" /> : <Text style={styles.buttonText}>Sign In</Text>}
-      </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={signInWithEmail} disabled={loading}>
+                {loading ? <ActivityIndicator color="#000" /> : <Text style={styles.buttonText}>Sign In</Text>}
+            </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, styles.outlineButton]} onPress={signUpWithEmail} disabled={loading}>
-        <Text style={styles.outlineButtonText}>Sign Up</Text>
-      </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.outlineButton]} onPress={signUpWithEmail} disabled={loading}>
+                <Text style={styles.outlineButtonText}>Sign Up</Text>
+            </TouchableOpacity>
 
-      <View style={styles.divider}>
-        <View style={styles.line} />
-        <Text style={styles.orText}>OR</Text>
-        <View style={styles.line} />
-      </View>
+            <View style={styles.divider}>
+                <View style={styles.line} />
+                <Text style={styles.orText}>OR</Text>
+                <View style={styles.line} />
+            </View>
 
-      <TouchableOpacity style={[styles.button, styles.socialButton]} onPress={handleGoogleLogin}>
-        <Text style={styles.socialButtonText}>Continue with Google</Text>
-      </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.socialButton]} onPress={handleGoogleLogin}>
+                <Text style={styles.socialButtonText}>Continue with Google</Text>
+            </TouchableOpacity>
 
-      {hasBiometrics && (
-        <TouchableOpacity style={[styles.button, styles.bioButton]} onPress={signInWithBiometrics}>
-          <Text style={styles.bioButtonText}>Login with Biometrics</Text>
-        </TouchableOpacity>
+            {hasBiometrics && (
+                <TouchableOpacity style={[styles.button, styles.bioButton]} onPress={signInWithBiometrics}>
+                <Text style={styles.bioButtonText}>Login with Biometrics</Text>
+                </TouchableOpacity>
+            )}
+
+            <TouchableOpacity style={styles.guestButton} onPress={() => setShowGuestPrompt(true)}>
+                <Text style={styles.guestButtonText}>Continue as Guest Mode</Text>
+            </TouchableOpacity>
+        </>
       )}
-
-      <TouchableOpacity style={styles.guestButton} onPress={handleGuestLogin}>
-        <Text style={styles.guestButtonText}>Continue as Guest</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -130,18 +170,24 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#0B0F1A',
     padding: 20,
     justifyContent: 'center',
   },
   header: {
-    fontSize: 36,
-    fontWeight: 'bold',
+    fontSize: 48,
+    fontWeight: '900',
     color: '#d4af37',
     textAlign: 'center',
     marginBottom: 40,
-    letterSpacing: 2,
+    letterSpacing: 4,
+    textShadowColor: 'rgba(212,175,55,0.3)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 10,
   },
+  subHeader: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  guestPromptContent: { width: '100%', alignItems: 'center' },
+  cancelText: { color: '#888', marginTop: 15, textDecorationLine: 'underline' },
   inputContainer: {
     marginBottom: 20,
   },

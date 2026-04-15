@@ -12,12 +12,11 @@ import { Shield } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { SecurityShield } from '@/components/ui/SecurityShield';
 import { upsertAccount } from '@/lib/stability_engine';
+import { startPriceEngine } from '@/lib/PriceEngine';
 import 'react-native-reanimated';
 
 SplashScreen.preventAutoHideAsync();
-
-const PIN_KEY = 'auramx_pin_lock';
-const GOLD = '#D4AF37';
+// ... (previous PIN and GOLD constants)
 
 function SecureBoot() {
   const { isInitialized, session, isGuest, setSession, setUser, setInitialized, showCelebration, setShowCelebration } = useAuthStore();
@@ -30,9 +29,11 @@ function SecureBoot() {
   useEffect(() => {
     async function boot() {
       try {
+        await startPriceEngine();
+        
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-            await upsertAccount(session.user.id, session.user.email);
+            await upsertAccount(session.user.id, session.user.email, session.user.user_metadata?.full_name);
         }
         setSession(session);
         setUser(session?.user ?? null);
@@ -45,7 +46,7 @@ function SecureBoot() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session) {
-          await upsertAccount(session.user.id, session.user.email);
+          await upsertAccount(session.user.id, session.user.email, session.user.user_metadata?.full_name);
       }
       setSession(session);
       setUser(session?.user ?? null);

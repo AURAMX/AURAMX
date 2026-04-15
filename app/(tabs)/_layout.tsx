@@ -8,10 +8,15 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Home, ArrowRightLeft, LineChart, BookOpen, GraduationCap, User } from 'lucide-react-native';
 
 import { VoiceMic } from '@/components/ui/VoiceMic';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
   const tint = Colors.gold;
+
+  const bottomOffset = Math.max(insets.bottom, 24) + 16;
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
@@ -22,18 +27,22 @@ export default function TabLayout() {
           tabBarButton: HapticTab,
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: 'rgba(26, 31, 46, 0.95)',
+            backgroundColor: 'rgba(26, 31, 46, 0.9)',
             borderTopColor: 'rgba(255,255,255,0.05)',
-            height: 70,
+            height: 74,
             paddingBottom: 0,
             position: 'absolute',
-            bottom: 24,
+            bottom: bottomOffset,
             left: 20,
             right: 20,
-            borderRadius: 24,
-            borderWidth: 1,
-            borderColor: 'rgba(255,255,255,0.1)',
+            borderRadius: 30,
+            borderWidth: 1.5,
+            borderColor: 'rgba(255,255,255,0.08)',
             elevation: 10,
+            shadowColor: Colors.gold,
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.15,
+            shadowRadius: 25,
           }
         }}>
         <Tabs.Screen

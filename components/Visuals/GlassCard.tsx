@@ -33,11 +33,17 @@ export const GlassCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: GlassTokens.borderRadius,
+    borderRadius: 24,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(212, 175, 55, 0.2)', // Subtle gold border
-    backgroundColor: 'rgba(26, 31, 46, 0.6)', // Base transparency
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.08)', // High-end 'Inner Glow' effect
+    backgroundColor: 'rgba(255, 255, 255, 0.05)', // Frosted glass pane
+    
+    // Neumorphic Depth Elevation (iOS)
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 15,
   },
   blur: {
     flex: 1,
@@ -45,5 +51,8 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     flex: 1,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.1)', // Secondary subtle gold inner border
+    borderRadius: 24,
   }
 });

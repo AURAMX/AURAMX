@@ -14,7 +14,7 @@ import { useAuthStore } from '@/hooks/useAuthStore';
 import { supabase } from '@/lib/supabase';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
-import { Shield, Zap, Flame, Award, Bell, LogOut, Phone, MessageSquare, Instagram, ExternalLink, Fingerprint, History, ChevronRight } from 'lucide-react-native';
+import { Shield, Zap, Flame, Award, Bell, LogOut, Phone, MessageSquare, Instagram, ExternalLink, Fingerprint, History, ChevronRight, X, Lock, Star } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 // Components
@@ -29,12 +29,13 @@ import { SecurityShield } from '@/components/ui/SecurityShield';
 
 import { engineCall } from '@/lib/stability_engine';
 import { trackEvent } from '@/lib/analytics_tracker';
+import { Colors } from '@/constants/theme';
 
 const { width } = Dimensions.get('window');
 const GOLD = '#D4AF37';
 const PIN_KEY = 'auramx_pin_lock';
 
-const PulsingAvatar = ({ level = 1 }: { level?: number }) => {
+const PulsingAvatar = ({ name = 'A', level = 1 }: { name?: string; level?: number }) => {
     const pulse = useSharedValue(1);
 
     useEffect(() => {
@@ -50,11 +51,16 @@ const PulsingAvatar = ({ level = 1 }: { level?: number }) => {
         opacity: interpolate(pulse.value, [1, 1.2], [0.3, 0]),
     }));
 
+    const initials = name.slice(0, 2).toUpperCase();
+
     return (
         <View style={styles.avatarRoot}>
             <Animated.View style={[styles.pulseRing, animatedStyle]} />
             <View style={styles.avatarInner}>
-                <Text style={styles.lvlTxt}>L{level}</Text>
+                <Text style={styles.lvlTxt}>{initials}</Text>
+            </View>
+            <View style={styles.levelBadge}>
+                <Text style={styles.levelBadgeText}>L{level}</Text>
             </View>
         </View>
     );
@@ -66,6 +72,7 @@ export default function ProfileScreen() {
   const [profile, setProfile] = useState<any>(null);
   const [badges, setBadges] = useState<string[]>([]);
   const [pinEnabled, setPinEnabled] = useState(false);
+  const [bioEnabled, setBioEnabled] = useState(false);
   const [bioSupported, setBioSupported] = useState(false);
   const [pushEnabled, setPushEnabled] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -174,10 +181,17 @@ export default function ProfileScreen() {
         <ScrollView style={styles.container} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
             {/* Profile Header */}
             <View style={styles.header}>
-                <PulsingAvatar level={profile?.level || 1} />
-                <View>
-                    <Text style={styles.userName}>{user?.email?.split('@')[0]}</Text>
+                <PulsingAvatar 
+                    name={user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'AU'}
+                    level={profile?.level || 1} 
+                />
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.userName}>{user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Aura Trader'}</Text>
                     <Text style={styles.userSub}>Investment Tier: Pro</Text>
+                    <View style={styles.onlineDot}>
+                        <View style={styles.greenDot} />
+                        <Text style={styles.onlineText}>Active Session</Text>
+                    </View>
                 </View>
             </View>
 
@@ -413,8 +427,13 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 20, marginBottom: 30 },
   avatarRoot: { position: 'relative', width: 80, height: 80, justifyContent: 'center', alignItems: 'center' },
   pulseRing: { position: 'absolute', width: 100, height: 100, borderRadius: 50, borderWidth: 2, borderColor: GOLD },
-  avatarInner: { width: 70, height: 70, borderRadius: 35, backgroundColor: GOLD, justifyContent: 'center', alignItems: 'center', borderWidth: 3, borderColor: 'rgba(0,0,0,0.2)' },
-  lvlTxt: { fontWeight: '900', fontSize: 24, color: '#000' },
+  avatarInner: { width: 72, height: 72, borderRadius: 36, backgroundColor: GOLD, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: 'rgba(212,175,55,0.5)' },
+  lvlTxt: { fontWeight: '900', fontSize: 22, color: '#000' },
+  levelBadge: { position: 'absolute', bottom: -4, right: -4, backgroundColor: '#0B0F1A', borderRadius: 10, borderWidth: 1, borderColor: GOLD, paddingHorizontal: 5, paddingVertical: 1 },
+  levelBadgeText: { color: GOLD, fontSize: 9, fontWeight: 'bold' },
+  onlineDot: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 },
+  greenDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#00C853' },
+  onlineText: { color: '#00C853', fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 0.5 },
   userName: { color: '#fff', fontSize: 28, fontWeight: '900', letterSpacing: -1 },
   userSub: { color: GOLD, fontSize: 13, fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1 },
   progressSection: { alignItems: 'center', marginBottom: 30 },

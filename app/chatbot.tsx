@@ -4,18 +4,14 @@ import { Send, Bot, User, X, Sparkles } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { useAuthStore } from '@/hooks/useAuthStore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const GOLD = '#D4AF37';
 const BG_COLOR = '#0B0F1A';
 
-type Message = {
-  id: string;
-  text: string;
-  sender: 'ai' | 'user';
-};
-
 export default function ChatbotScreen() {
   const { user } = useAuthStore();
+  const insets = useSafeAreaInsets();
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', text: "👋 Hello! I am AURAMX AI, your guide to mastering the markets. I can help you understand trading, crypto, and how to level up in the app. How can I assist you today? 🚀", sender: 'ai' }
   ]);
@@ -88,7 +84,8 @@ export default function ChatbotScreen() {
   return (
     <KeyboardAvoidingView 
       style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'android' ? 90 : 0}
     >
       <BlurView intensity={20} tint="dark" style={styles.header}>
           <View style={styles.row}>
