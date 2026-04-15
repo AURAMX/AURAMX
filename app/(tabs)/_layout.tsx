@@ -7,7 +7,7 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Home, ArrowRightLeft, LineChart, BookOpen, GraduationCap, User } from 'lucide-react-native';
 
-import { VoiceMic } from '@/components/UI/VoiceMic';
+import { VoiceMic } from '@/components/ui/VoiceMic';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();

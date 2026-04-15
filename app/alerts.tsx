@@ -13,7 +13,7 @@ import { GlassCard } from '@/components/Visuals/GlassCard';
 import { MorphingBackground } from '@/components/Visuals/MorphingBackground';
 import { ParticleSystem } from '@/components/Visuals/ParticleSystem';
 import { RippleButton } from '@/components/Visuals/RippleButton';
-import { Skeleton } from '@/components/UI/SkeletonLoader';
+import { Skeleton } from '@/components/ui/SkeletonLoader';
 import { Colors, Spacing, Layout } from '@/constants/theme';
 
 const { width } = Dimensions.get('window');

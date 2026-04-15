@@ -25,7 +25,7 @@ import { ParticleSystem } from '@/components/Visuals/ParticleSystem';
 import { RippleButton } from '@/components/Visuals/RippleButton';
 import { TiltCard } from '@/components/Visuals/TiltCard';
 import { XPProgressCircle } from '@/components/Infographics/UserStatsVisuals';
-import { SecurityShield } from '@/components/UI/SecurityShield';
+import { SecurityShield } from '@/components/ui/SecurityShield';
 
 import { engineCall } from '@/lib/stability_engine';
 import { trackEvent } from '@/lib/analytics_tracker';

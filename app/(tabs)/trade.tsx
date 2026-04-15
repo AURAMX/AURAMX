@@ -24,7 +24,7 @@ import { RSIGauge, VolumeBars } from '@/components/Infographics/MarketIndicators
 import { engineCall } from '@/lib/stability_engine';
 import { trackEvent, earnXP, unlockBadge } from '@/lib/analytics_tracker';
 import { analyzeMarket } from '@/lib/gemini_service';
-import { CardSkeleton } from '@/components/UI/SkeletonLoader';
+import { CardSkeleton } from '@/components/ui/SkeletonLoader';
 import { Colors } from '@/constants/theme';
 
 const { width } = Dimensions.get('window');

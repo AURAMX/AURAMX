@@ -23,7 +23,7 @@ import { PortfolioDonut } from '@/components/Infographics/PortfolioDonut';
 
 import { Flame, ChevronRight, TrendingUp, Wallet, Award, Trophy, Sparkles } from 'lucide-react-native';
 import { getAIBrief } from '@/lib/gemini_service';
-import { Skeleton } from '@/components/UI/SkeletonLoader';
+import { Skeleton } from '@/components/ui/SkeletonLoader';
 import { OrderFlowVisual, VolumeProfile } from '@/components/Infographics/AdvancedTrading';
 import { FearGreedGauge } from '@/components/Infographics/FearGreedGauge';
 import { Colors, Spacing } from '@/constants/theme';
