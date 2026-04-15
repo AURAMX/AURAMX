@@ -29,15 +29,25 @@ function SecureBoot() {
   useEffect(() => {
     async function boot() {
       try {
-        await startPriceEngine();
-        
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            await upsertAccount(session.user.id, session.user.email, session.user.user_metadata?.full_name);
+        // Start price engine - crash-proof (has fallback prices)
+        startPriceEngine().catch(() => {}); // fire-and-forget, never blocks boot
+
+        // Auth session - wrapped individually so a network error doesn't block app
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+              upsertAccount(session.user.id, session.user.email, session.user.user_metadata?.full_name).catch(() => {});
+          }
+          setSession(session);
+          setUser(session?.user ?? null);
+        } catch (authErr) {
+          console.warn('[Boot] Auth session failed, continuing as unauthenticated');
         }
-        setSession(session);
-        setUser(session?.user ?? null);
+        
         setInitialized(true);
+      } catch (e) {
+        console.error('[Boot] Critical error:', e);
+        setInitialized(true); // Always show the app
       } finally {
         SplashScreen.hideAsync();
       }
