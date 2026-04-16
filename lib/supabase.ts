@@ -12,12 +12,12 @@ const UniversalStorageAdapter = {
     return SecureStore.getItemAsync(key);
   },
   setItem: (key: string, value: string) => {
-    if (Platform.OS === 'web') AsyncStorage.setItem(key, value);
-    else SecureStore.setItemAsync(key, value);
+    if (Platform.OS === 'web') return AsyncStorage.setItem(key, value);
+    return SecureStore.setItemAsync(key, value);
   },
   removeItem: (key: string) => {
-    if (Platform.OS === 'web') AsyncStorage.removeItem(key);
-    else SecureStore.deleteItemAsync(key);
+    if (Platform.OS === 'web') return AsyncStorage.removeItem(key);
+    return SecureStore.deleteItemAsync(key);
   },
 };
 
