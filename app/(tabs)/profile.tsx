@@ -233,6 +233,36 @@ export default function ProfileScreen() {
                 ))}
             </ScrollView>
 
+            {/* External Portfolio Setup */}
+            <Text style={styles.secTitle}>External Portfolios</Text>
+            <GlassCard style={styles.itemCard}>
+                <View style={styles.row}>
+                    <View style={styles.rowInner}>
+                        <Award color={GOLD} size={20} />
+                        <Text style={styles.itemText}>Stocks (₹)</Text>
+                    </View>
+                    <TextInput 
+                        style={styles.portfolioInput}
+                        keyboardType="number-pad"
+                        value={useAuthStore.getState().portfolioStocks.toString()}
+                        onChangeText={(val) => useAuthStore.getState().setPortfolio(Number(val) || 0, useAuthStore.getState().portfolioCrypto)}
+                    />
+                </View>
+                <View style={[styles.dividerThin, { marginVertical: 15 }]} />
+                <View style={styles.row}>
+                    <View style={styles.rowInner}>
+                        <Zap color={GOLD} size={20} />
+                        <Text style={styles.itemText}>Crypto (₹)</Text>
+                    </View>
+                    <TextInput 
+                        style={styles.portfolioInput}
+                        keyboardType="number-pad"
+                        value={useAuthStore.getState().portfolioCrypto.toString()}
+                        onChangeText={(val) => useAuthStore.getState().setPortfolio(useAuthStore.getState().portfolioStocks, Number(val) || 0)}
+                    />
+                </View>
+            </GlassCard>
+
             {/* Activity & Alerts Section */}
             <Text style={styles.secTitle}>Portfolio Tools</Text>
             <GlassCard style={styles.itemCard}>
@@ -457,6 +487,7 @@ const styles = StyleSheet.create({
   devRow: { flexDirection: 'row', alignItems: 'center', gap: 15 },
   devImageContainer: { width: 80, height: 80, borderRadius: 40, borderWidth: 3, borderColor: GOLD, overflow: 'hidden' },
   devImage: { width: '100%', height: '100%' },
+  portfolioInput: { backgroundColor: 'rgba(255,255,255,0.05)', color: GOLD, minWidth: 100, height: 40, borderRadius: 8, paddingHorizontal: 10, textAlign: 'right', fontWeight: 'bold' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' },
   setupCard: { width: '85%', padding: 32, alignItems: 'center' },
   setupTitle: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 8 },

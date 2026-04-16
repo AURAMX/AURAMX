@@ -37,6 +37,24 @@ export const analyzeMarket = async (symbol: string, candles: any[], indicators: 
     }
 };
 
+export const getAIBrief = async (portfolio: any[]) => {
+    try {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        
+        const prompt = `
+            You are AURAMX AI, a financial expert. Give a very short 2-sentence morning brief 
+            for a beginner investor holding: ${JSON.stringify(portfolio)}.
+            Focus on learning, no financial advice. Keep it under 40 words.
+        `;
+
+        const result = await model.generateContent(prompt);
+        return (await result.response).text();
+    } catch (error) {
+        console.error('[GeminiService] Brief generation failed:', error);
+        return "Market volatility is high today. Great time to learn about risk management! 🛡️";
+    }
+};
+
 export const parseVoiceCommand = async (transcript: string) => {
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });

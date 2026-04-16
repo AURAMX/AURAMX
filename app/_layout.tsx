@@ -13,6 +13,7 @@ import { BlurView } from 'expo-blur';
 import { SecurityShield } from '@/components/ui/SecurityShield';
 import { upsertAccount } from '@/lib/stability_engine';
 import { startPriceEngine } from '@/lib/PriceEngine';
+import { Celebration } from '@/components/Celebration';
 import 'react-native-reanimated';
 
 SplashScreen.preventAutoHideAsync();

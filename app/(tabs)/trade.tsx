@@ -66,7 +66,7 @@ export const ProductionChart = React.memo(({ candles, type }: { candles: Candle[
 
 export default function TradeScreen() {
   const { symbol = 'BTC' } = useLocalSearchParams<{ symbol: string }>();
-  const { user, balance, setBalance, triggerCelebration } = useAuthStore();
+  const { user, balance, setBalance, triggerCelebration, currency, exchangeRate } = useAuthStore();
   
   const [asset, setAsset] = useState<any>(null);
   const [candles, setCandles] = useState<Candle[]>([]);
@@ -76,6 +76,9 @@ export default function TradeScreen() {
   const [trading, setTrading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [priceColor, setPriceColor] = useState('#fff');
+
+  const currSym = currency === 'INR' ? '₹' : '$';
+  const displayBal = currency === 'INR' ? balance : balance / exchangeRate;
 
   const candleRef = useRef<Candle[]>([]);
 
@@ -124,6 +127,7 @@ export default function TradeScreen() {
     const qty = parseFloat(quantity);
     if (!qty || qty <= 0) return Alert.alert('Invalid Order', 'Please enter a valid quantity.');
     
+    // Trade happens in INR native values always
     const price = candles[candles.length - 1]?.close || asset?.current_price;
     const totalValue = qty * price;
 
@@ -132,7 +136,7 @@ export default function TradeScreen() {
     }
 
     setTrading(true);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    // Haptics removed for web compat
 
     try {
         // 1. Write Trade to Supabase (Authority)
@@ -189,9 +193,9 @@ export default function TradeScreen() {
 
         <ScrollView style={styles.container} contentContainerStyle={styles.scroll}>
             <View style={styles.header}>
-                <Text style={styles.symbol}>{symbol} / INR</Text>
+                <Text style={styles.symbol}>{symbol} / {currency}</Text>
                 <Text style={[styles.price, { color: priceColor }]}>
-                    ₹{(candles[candles.length - 1]?.close || asset?.current_price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {currSym}{((candles[candles.length - 1]?.close || asset?.current_price || 0) / (currency === 'INR' ? 1 : exchangeRate)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </Text>
             </View>
 
@@ -233,7 +237,7 @@ export default function TradeScreen() {
             <GlassCard style={styles.orderCard}>
                 <View style={styles.row}>
                     <Text style={styles.label}>Available Balance</Text>
-                    <Text style={styles.balVal}>₹{balance.toLocaleString()}</Text>
+                    <Text style={styles.balVal}>{currSym}{displayBal.toLocaleString(undefined, { maximumFractionDigits: 2 })}</Text>
                 </View>
                 
                 <TextInput 
